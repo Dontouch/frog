@@ -13,9 +13,12 @@ public:
 	void bgMove(float uptime, int upY, float downtime, int downY);
 	virtual void update(float dt);
 	void createBG();
+    
+    //ç›‘å¬ä¸­çš„æ›´æ–°
 	void insectsFunctionInUpdate();
 	void mushroomFunctionInUpdate();
 	void mosquitoFunctionInUpdate();
+    
 private:
 	Frog* _frog;
 	Mushroom* _mushroom;
@@ -23,12 +26,14 @@ private:
 	Vector<Insect*> _insects;
 	Sprite* _bg1;
 	Sprite* _bg2;
-	LabelTTF* _label;
-	float _curfrogY;// ¼ÆËãµÃ·ÖËùÓÃ
-	float _score; // µÃ·Ö£¬¼´ÌøÔ¾µÄ¸ß¶È
-	float _velocityX; // ÇàÍÜxÖáËÙ¶È
-	int _pattern; // Ä£Ê½Çø·Ö  1Îª¾çÇéÄ£Ê½£¬2ÎªÎŞ¾¡Ä£Ê½
-	void start(Ref *sender);
+    
+	LabelTTF* _label; //æ˜¾ç¤ºåˆ†æ•°
+	float _curfrogY;// è®¡ç®—å¾—åˆ†æ‰€æœ‰
+	float _score; // å¾—åˆ†ï¼Œå³æ˜¯è·³è·ƒçš„é«˜åº¦
+	float _velocityX; // é’è›™xè½´é€Ÿåº¦
+	int _pattern; // æ¨¡å¼åŒºåˆ†   å‰§æƒ…æ¨¡å¼ æ— å°½æ¨¡å¼
+	
+    void start(Ref *sender);
 	void pause(Ref *sender);
 	void begin(Ref *sender);
 	void restart(Ref *sender);

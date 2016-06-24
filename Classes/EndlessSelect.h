@@ -3,6 +3,8 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
+
+//无尽模式
 class EndlessSelect :public Layer{
 public:
 	static Scene* createScene();

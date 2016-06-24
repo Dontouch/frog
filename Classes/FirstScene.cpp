@@ -1,6 +1,7 @@
 #include "FirstScene.h"
 #include "GameScene.h"
 #include "SecondScene.h"
+
 FirstScene* FirstScene::create(int pattern){
 	auto firstScene = new FirstScene();
 	if (firstScene && firstScene->init(pattern)){
@@ -21,49 +22,59 @@ Scene* FirstScene::createScene(int pattern){
 }
 
 bool FirstScene::init(int pattern){
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	srand(int(time(0))); 
-	_velocityX = 0.0f;   // ³õÊ¼»¯ÇàÍÜÖÜÔÚxÖáÉÏµÄ³õËÙ¶È
+	
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+	srand(int(time(0)));
+    
+	_velocityX = 0.0f;   //åˆå§‹åŒ–é’è›™å‘¨åœ¨xè½´ä¸Šçš„åˆé€Ÿåº¦
 	_pattern = pattern;
-	_isCollideValid = true;
-	// ´´½¨ÓÎÏ·µÚÒ»´Î¿ªÊ¼°´Å¥
+	_isCollideValid = true;//ç¢°æ’æ˜¯ä¸æ˜¯æœ‰æ•ˆ
+    
+	//åˆ›å»ºæ¸¸æˆç¬¬ä¸€æ¬¡å¼€å§‹çš„æŒ‰é’®
 	auto beginItem = MenuItemImage::create("begin.png", "begin.png", this, menu_selector(FirstScene::begin));
 	beginItem->setOpacity(150);
 	auto beginMenu = CCMenu::createWithItem(beginItem);
 	beginMenu->setPosition(Point(visibleSize.width/2, visibleSize.height/2));
 	beginMenu->setName("beginMenu");
 	this->addChild(beginMenu, 200);
-	// ´´½¨ÔİÍ£°´Å¥
+	
+    //åˆ›å»ºæ¸¸æˆæš‚åœçš„æŒ‰é’®
 	auto pauseItem = MenuItemImage::create("pause.png", "pause.png", this, menu_selector(FirstScene::pause));
 	pauseItem->setName("pauseItem");
 	auto pauseMenu = CCMenu::createWithItem(pauseItem);
 	pauseMenu->setPosition(Point(visibleSize.width*0.95,visibleSize.height*0.97));
 	pauseMenu->setName("pauseMenu");
 	this->addChild(pauseMenu,200);
-	// ¼ÓÔØ¾«ÁéÖ¡
+	
+    //åŠ è½½èµ„æº é€šè¿‡å¸§èµ„æº
 	SpriteFrameCache* spriteFrameCache = SpriteFrameCache::getInstance();
 	spriteFrameCache->addSpriteFramesWithFile("resource1.plist","resource1.png");
-	// ´´½¨µÃ·Ö±êÇ©
+	
+    //åˆ›å»ºå¾—åˆ†æ ‡ç­¾
 	_score = 0.0f;
 	_label = LabelTTF::create();
-	_label->setString("0.0");
+	_label->setString("0.0");//é»˜è®¤çš„åˆ†æ•°æ˜¯0
 	_label->setFontSize(25);
 	_label->setPosition(visibleSize.width*0.95,visibleSize.height*0.04);
 	_label->setColor(Color3B::YELLOW);
 	this->addChild(_label,10);
-	// ´´½¨±³¾°
+	
+    //åˆ›å»ºèƒŒæ™¯
 	createBG();
+    
 	//bgMove(1.0f, 20, 1.0f, -150);
-	// ´´½¨ÇàÍÜ
+	//åˆ›å»ºé’è›™
 	_frog = Frog::create();
 	_frog->bindSprite(Sprite::createWithSpriteFrameName("frog1.png"));
 	_frog->setPosition(visibleSize.width /2, visibleSize.height * 0.4);
 	_frog->setScale(0.6);
 	this->addChild(_frog);
-	//_frog->run();
+	
+    //_frog->run();
 	//_frog->jump(1.0f, visibleSize.height*0.2, 1.0f, -visibleSize.height*0.2);
-	_curfrogY = _frog->getPositionY(); // ¼ÆËãµÃ·ÖËùÓÃ
-	// ´´½¨³æ×Ó
+	_curfrogY = _frog->getPositionY(); //è®¡ç®—å¾—åˆ†æ‰€ç”¨
+    
+    //åˆ›å»ºè™«å­
 	for (int i = 0; i < 4; i++){
 		auto insect = Insect::create();
 		insect->bindSprite(Sprite::createWithSpriteFrameName("insect2.png"));
@@ -77,12 +88,13 @@ bool FirstScene::init(int pattern){
 		_insects.pushBack(insect);
 		//insect->move(1.0f, visibleSize.height*0.208333, 1.0f, -visibleSize.height*0.46875);
 		if (i == 0 || i == 1){
-			insect->setName("static"); // ÊÇÖ¸xÖáÉÏÊÇ·ñÒÆ¶¯¶ø²»ÊÇ±¾ÉíÊÇ·ñrun
+			insect->setName("static"); //æ˜¯æŒ‡xè½´ä¸Šæ˜¯å¦ç§»åŠ¨è€Œä¸æ˜¯æœ¬èº«æ˜¯å¦run
 			//insect->run();
-		} // Á½Ö»»áÒÆ¶¯µÄ³æ×Ó
+		} // ä¸¤åªä¼šç§»åŠ¨çš„è™«å­
 		this->addChild(insect);
 	}
-	// ´´½¨Ä¢¹½
+    
+	// åˆ›å»ºè˜‘è‡
 	_mushroom = Mushroom::create();
 	_mushroom->bindSprite(Sprite::createWithSpriteFrameName("mushroom.png"));
 	_mushroom->setScale(0.7);
@@ -95,7 +107,9 @@ bool FirstScene::init(int pattern){
 	_mushroom->setPosition(mushroomposX, (CCRANDOM_0_1() + 1)*visibleSize.height);
 	//_mushroom->move(1.0f, visibleSize.height*0.208333, 1.0f, -visibleSize.height*0.46875);
 	this->addChild(_mushroom);
-	// ´´½¨ÎÃ×Ó
+	
+    
+    //åˆ›å»ºèšŠå­
 	for (int i = 0; i < 1; i++){
 		auto mosquito = Mosquito::create();
 		mosquito->bindSprite(Sprite::createWithSpriteFrameName("mosquito1.png"));
@@ -105,20 +119,20 @@ bool FirstScene::init(int pattern){
 		this->addChild(mosquito);
 		_mosquitoes.pushBack(mosquito);
 	}
-	// Æô¶¯µ÷¶ÈÆ÷
+	//å¯åŠ¨è°ƒåº¦å™¨
 	//this->scheduleUpdate();
-	//ÖØÁ¦¸ĞÓ¦×¢²á
-	//this->setAccelerometerEnabled(true);//¿ªÆôÓ²¼şÉè±¸ 
+	//é‡åŠ›æ„Ÿåº”æ³¨å†Œ
+	//this->setAccelerometerEnabled(true);//å¼€å¯ç¡¬ä»¶è®¾å¤‡
 	auto listener = EventListenerAcceleration::create([&](Acceleration* acc, Event* event){
-		//¿ØÖÆ¼õËÙµÄËÙÂÊÖµÔ½Ğ¡£¬¸üÈİÒ×¸Ä±ä·½Ïò   // ¼õËÙ¶ÈÏµÊı(ÖµÔ½Ğ¡£½×ªÏòÔ½¿ì)
+		//æ§åˆ¶å‡é€Ÿçš„é€Ÿç‡å€¼è¶Šå°ï¼Œæ›´å®¹æ˜“æ”¹å˜æ–¹å‘   // å‡é€Ÿåº¦ç³»æ•°(å€¼è¶Šå°ï¼è½¬å‘è¶Šå¿«)
 		float deceleration = 0.5f;
-		//¼ÓËÙ¼ÆµÄÃô¸ĞÖµÔ½´ó£¬Ö÷½Ç¶Ô¼ÓËÙ¼ÆµÄÊäÈë»áÔ½Ãô¸Ğ    // ¼ÓËÙ¶ÈÏµÊı (ÖµÔ½´ó = Ô½Ãô¸Ğ)
+		//åŠ é€Ÿè®¡çš„æ•æ„Ÿå€¼è¶Šå¤§ï¼Œä¸»è§’å¯¹åŠ é€Ÿè®¡çš„è¾“å…¥ä¼šè¶Šæ•æ„Ÿ    // åŠ é€Ÿåº¦ç³»æ•° (å€¼è¶Šå¤§ = è¶Šæ•æ„Ÿ)
 		float sensitivity = 20.0f;
-		//×î´óÒÆ¶¯¾àÀë  // ×î´óËÙ¶È
+		//æœ€å¤§ç§»åŠ¨è·ç¦»  // æœ€å¤§é€Ÿåº¦
 		float maxVelocity = 200.0f;
-		// ¼ÆËãĞÂµÄ³õËÙ¶È
-		_velocityX = _velocityX*deceleration + acc->x*sensitivity;
-		// ÏŞÖÆ×î´óËÙ¶ÈÎª ¡ÀmaxVelocityÖ®¼ä
+		// è®¡ç®—æ–°çš„åˆé€Ÿåº¦
+        _velocityX = _velocityX*deceleration + acc->x*sensitivity;
+		// é™åˆ¶æœ€å¤§é€Ÿåº¦ä¸º Â±maxVelocityä¹‹é—´
 		if (_velocityX >= maxVelocity)
 		{
 			_velocityX = maxVelocity;
@@ -128,15 +142,15 @@ bool FirstScene::init(int pattern){
 			_velocityX = -maxVelocity;
 		}
 	});
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);  // ×¢²áµ½²ãÉÏ
-	//Íæ¼ÒËÙ¶ÈÓÉÒ»¸öÒ»´ÎÏßĞÔ·½³Ì¾ö¶¨:V= V?*¦Â+ V?*¦Å,ÆäÖĞ,VÎªÖÕËÙ,V?Îª³õËÙ,Îª¼õËÙÏµÊı,V?Îª¼ÓËÙ¶È,¦ÅÎª¼ÓËÙÏµÊı
-	// ÆäÖĞ£¬¦ÂºÍ¦ÅÁ½¸öÏµÊıÊÇÁ½¸ö¾­ÑéÖµ£¬Äã¿ÉÒÔ×Ô¼ºµ÷ÕûËüÒÔ´ïµ½ÀíÏëĞ§¹û¡£
-	/*-----------------------------ÖØÁ¦¸ĞÓ¦×¢²á---------------------------*/
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);  // æ³¨å†Œåˆ°å±‚ä¸Š
+	//ç©å®¶é€Ÿåº¦ç”±ä¸€ä¸ªä¸€æ¬¡çº¿æ€§æ–¹ç¨‹å†³å®š:V= V?*Î²+ V?*Îµ,å…¶ä¸­,Vä¸ºç»ˆé€Ÿ,V?ä¸ºåˆé€Ÿ,ä¸ºå‡é€Ÿç³»æ•°,V?ä¸ºåŠ é€Ÿåº¦,Îµä¸ºåŠ é€Ÿç³»æ•°
+    // å…¶ä¸­ï¼ŒÎ²å’ŒÎµä¸¤ä¸ªç³»æ•°æ˜¯ä¸¤ä¸ªç»éªŒå€¼ï¼Œä½ å¯ä»¥è‡ªå·±è°ƒæ•´å®ƒä»¥è¾¾åˆ°ç†æƒ³æ•ˆæœã€‚
+    /*-----------------------------é‡åŠ›æ„Ÿåº”æ³¨å†Œ---------------------------*/
 	return true;
 }
 
 void FirstScene::update(float dt){   
-	// ÖØÁ¦¸ĞÓ¦¸Ä±äÇàÍÜX×ø±ê
+	// é‡åŠ›æ„Ÿåº”æ”¹å˜é’è›™Xåæ ‡
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto frogwidth = _frog->getContentSize().width;
 	auto leftBorderLimit = frogwidth / 2;
@@ -151,7 +165,8 @@ void FirstScene::update(float dt){
 		_velocityX = 0.0f;
 	}
 	_frog->setPositionX(posX);
-	// ¼ÆËãµÃ·Ö
+	
+    //è®¡ç®—å¾—åˆ†
 	if (_isCollideValid){
 		float a = _frog->getPositionY() - _curfrogY;
 		if (a > 0)
@@ -165,7 +180,7 @@ void FirstScene::update(float dt){
 		_label->setString(ch);
 		_curfrogY = _frog->getPositionY();
 	}
-	// Èç¹ûÊÇ¾çÇéÄ£Ê½
+	//å¦‚æœæ˜¯å‰§æƒ…æ¨¡å¼
 	if (_pattern == 1 && _isCollideValid){
 		if (_score >= 1.0){
 			_isCollideValid = false;
@@ -190,15 +205,15 @@ void FirstScene::update(float dt){
 			this->addChild(menu, 200);
 		}
 	}
-	// ±³¾°Í¼ÎŞÏŞ¹ö¶¯
+	// èƒŒæ™¯å›¾æ— é™æ»šåŠ¨
 	if (_bg1->getPositionY() <= -visibleSize.height + 10)
 		_bg1->setPositionY(visibleSize.height - 10);
 	if (_bg2->getPositionY() <= -visibleSize.height + 10)
 		_bg2->setPositionY(visibleSize.height - 10);
 
-	mushroomFunctionInUpdate(); // ÅĞ¶ÏÄ¢¹½ÒÆ³öÆÁÄ»ÒÔ¼°Åö×²¼ì²â
-	insectsFunctionInUpdate(); // ÅĞ¶Ï³æ×ÓÒÆ³öÆÁÄ»ÒÔ¼°Åö×²¼ì²â
-	mosquitoFunctionInUpdate(); 
+	mushroomFunctionInUpdate(); //åˆ¤æ–­è˜‘è‡ç§»å‡ºå±å¹•ä»¥åŠç¢°æ’æ£€æµ‹
+	insectsFunctionInUpdate(); //åˆ¤æ–­è™«å­ç§»å‡ºå±å¹•ä»¥åŠç¢°æ’æ£€æµ‹
+	mosquitoFunctionInUpdate(); //èšŠå­
 }
 
 void FirstScene::createBG(){
@@ -214,7 +229,7 @@ void FirstScene::createBG(){
 }
 
 void FirstScene::insectsFunctionInUpdate(){
-	// ÅĞ¶Ï³æ×ÓÊÇ·ñÔ½³öÆÁÄ»
+	
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	float x, y;
 	bool flag;
@@ -254,7 +269,7 @@ void FirstScene::insectsFunctionInUpdate(){
 				scale = CCRANDOM_0_1();
 			insect->setScale(scale);
 		}
-	// ÓĞ2Ö»³æ×Ó»á¶¯
+	//æœ‰2åªè™«å­ä¼šåŠ¨
 	if (insect->getName() == "static"){
 		MoveTo* moveTo;
 		CallFunc* callfunc;
@@ -280,17 +295,17 @@ void FirstScene::insectsFunctionInUpdate(){
 		sequence = Sequence::create(moveTo, callfunc, NULL);
 		insect->runAction(sequence);
 	}
-	// ¼ì²â³æ×ÓÓëÇàÍÜÅö×²
+	// æ£€æµ‹è™«å­ä¸é’è›™ç¢°æ’
 	if (_frog->getBoundingBox().intersectsRect(insect->getBoundingBox()) && _isCollideValid){
-		if (_frog->getName() != "¼ÓËÙ×´Ì¬"){
+		if (_frog->getName() != "åŠ é€ŸçŠ¶æ€"){
 			auto scaleTo = ScaleTo::create(1.0f, _frog->getScale() + 0.1f);
 			_frog->runAction(scaleTo);
 			insect->setVisible(false);
 			for (auto insect : _insects)
 				insect->downSpeed();
 			bool flag = _mushroom->downSpeed();
-			if (flag){ // ÒÑ¾­³ÔÁË3¸ö³æ×Ó»òÎÃ×Ó
-				_isCollideValid = false;
+			if (flag){ // å·²ç»åƒäº†3ä¸ªè™«å­æˆ–èšŠå­
+                _isCollideValid = false;
 				for (auto mosquito : _mosquitoes){
 					mosquito = static_cast<Mosquito*>(mosquito);
 					mosquito->stopAllActions();
@@ -312,17 +327,17 @@ void FirstScene::insectsFunctionInUpdate(){
 					this->removeChildByName("pauseMenu");
 					auto visibleSize = Director::getInstance()->getVisibleSize();
 					TTFConfig config("fonts/yuehei.otf", 48);
-					// Ìí¼ÓÖØĞÂ¿ªÊ¼°´Å¥
+					// æ·»åŠ é‡æ–°å¼€å§‹æŒ‰é’®
 					auto restartItem = MenuItemImage::create("btn_restart02.png", "btn_restart02.png", CC_CALLBACK_1(FirstScene::restart, this));
 					restartItem->setPosition(visibleSize.width/2,visibleSize.height/2.3);
-					// Ìí¼Ó·µ»ØÖ÷²Ëµ¥°´Å¥
+					// æ·»åŠ è¿”å›ä¸»èœå•æŒ‰é’®
 					auto backItem = MenuItemImage::create("btn_back02.png", "btn_back02.png", CC_CALLBACK_1(FirstScene::backGameScene, this));
 					backItem->setPosition(visibleSize/2);
 
 					auto menu = Menu::create(restartItem, backItem, NULL);
 					menu->setPosition(Vec2::ZERO);
 					this->addChild(menu,200);
-					// ·ÖÊı
+					// åˆ†æ•°
 					auto labelScore = Label::createWithTTF(config, "  0  ");
 					labelScore->setPosition(Point(visibleSize.width/ 2, visibleSize.height/1.8));
 					labelScore->setColor(Color3B::YELLOW);
@@ -335,9 +350,9 @@ void FirstScene::insectsFunctionInUpdate(){
 				});
 			    auto sequecne = Sequence::create(scaleTo,spawn,callfunc, NULL);
 			    _frog->runAction(sequecne);
-			} // ËÙ¶ÈµÍÓÚ80µÄÊ±ºòÓÎÏ·½áÊø
+			} // é€Ÿåº¦ä½äº80çš„æ—¶å€™æ¸¸æˆç»“æŸ
 	    }
-		else{ // ¼ÓËÙÊ±³æ×Ó±»×²ºó
+		else{ // åŠ é€Ÿæ—¶è™«å­è¢«æ’å
 			insect->setVisible(false);
 		}
 	}
@@ -345,7 +360,7 @@ void FirstScene::insectsFunctionInUpdate(){
 }
 void FirstScene::mushroomFunctionInUpdate(){
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	// ÅĞ¶ÏÄ¢¹½
+	//åˆ¤æ–­è˜‘è‡
 	if (_mushroom->getPositionY() <= 0 || _mushroom->isVisible() == false){
 		float mushroomposX;
 		float rightBorderLimit = visibleSize.width*0.8617 - _mushroom->getContentSize().width / 2;
@@ -353,16 +368,16 @@ void FirstScene::mushroomFunctionInUpdate(){
 		do{
 			mushroomposX = CCRANDOM_0_1()*visibleSize.width;
 		} while (mushroomposX <= leftBorderLlimit || mushroomposX >= rightBorderLimit);
-		_mushroom->setPosition(mushroomposX, visibleSize.height*(CCRANDOM_0_1() + 10));// 4ÃëÄ¢¹½ÏÂÒÆÒ»¸öÆÁÄ»¸ß¶È
+		_mushroom->setPosition(mushroomposX, visibleSize.height*(CCRANDOM_0_1() + 10)); // 4ç§’è˜‘è‡ä¸‹ç§»ä¸€ä¸ªå±å¹•é«˜åº¦
 		_mushroom->setVisible(true);
 	}
 	if (_frog->getBoundingBox().intersectsRect(_mushroom->getBoundingBox()) && _isCollideValid){
-		if (_frog->getName() != "¼ÓËÙ×´Ì¬"){
+		if (_frog->getName() != "åŠ é€ŸçŠ¶æ€"){
 			_mushroom->setVisible(false);
-			_frog->setName("¼ÓËÙ×´Ì¬");
+			_frog->setName("åŠ é€ŸçŠ¶æ€");
 
-			_frog->stopAllActions(); // visibleSize.height*0.8 Îª¼ÓËÙÊ±×î¸ßÎ»ÖÃ £¬-visibleSize.height*0.4Îª¼ÓËÙºóÏÂ½µÎ»ÒÆ
-			_frog->getSprite()->stopAllActions(); // Í£Ö¹run
+			_frog->stopAllActions(); // visibleSize.height*0.8 ä¸ºåŠ é€Ÿæ—¶æœ€é«˜ä½ç½® ï¼Œ-visibleSize.height*0.4ä¸ºåŠ é€Ÿåä¸‹é™ä½ç§»
+			_frog->getSprite()->stopAllActions(); //  åœæ­¢run
 			auto up = EaseSineOut::create(MoveBy::create((visibleSize.height*0.8 - _frog->getPositionY()) / 80, Point(0, visibleSize.height*0.8 - _frog->getPositionY())));
 			auto scaleTo = ScaleTo::create((visibleSize.height*0.8 - _frog->getPositionY()) / 80, 0.6f);
 			auto spawn = Spawn::create(up, scaleTo, NULL);
@@ -371,7 +386,7 @@ void FirstScene::mushroomFunctionInUpdate(){
 				_frog->removeChildByName("111");
 				_frog->bindSprite(Sprite::createWithSpriteFrameName("frog1.png")); });
 			auto down = EaseSineIn::create(MoveBy::create(1.0f, Point(0, -visibleSize.height*0.4)));
-			auto callfunc2 = CallFunc::create([=](){ _frog->setName("ÌøÔ¾×´Ì¬");
+			auto callfunc2 = CallFunc::create([=](){ _frog->setName("è·³è·ƒçŠ¶æ€");
 			_frog->jump(1.0f, visibleSize.height*0.2, 1.0f, -visibleSize.height*0.2); 
 			_frog->run(); });
 			auto sequence = Sequence::create(spawn, delay, callfunc1,down, callfunc2, NULL);
@@ -384,7 +399,7 @@ void FirstScene::mushroomFunctionInUpdate(){
 			for (auto insect : _insects){
 				if (insect->getName() == "moving"){
 					insect->setName("static");
-				}// Í£Ö¹³æ×ÓµÄ¶¯×÷ºó³æ×ÓµÄ×´Ì¬»Ö¸´²»ÁËstatic
+				}//åœæ­¢è™«å­çš„åŠ¨ä½œåè™«å­çš„çŠ¶æ€æ¢å¤ä¸äº†static
 				insect = static_cast<Insect*>(insect);
 				insect->stopAllActions();
 				insect->move(0.0f, 0, 6.0f, -6000);
@@ -410,7 +425,7 @@ void FirstScene::mosquitoFunctionInUpdate(){
 			mosquito->setVisible(true);
 		}
 		if (rand() % 6 == 1){
-			// ×İÏòµ÷½Ú
+			// çºµå‘è°ƒèŠ‚
 			if (rand() % 5 < 2){
 				auto moveBy = MoveBy::create(1.0f, Point(0, 20.0f));
 				mosquito->runAction(moveBy);
@@ -420,8 +435,8 @@ void FirstScene::mosquitoFunctionInUpdate(){
 				mosquito->runAction(moveBy);
 			}
 			int posX = mosquito->getPositionX();
-			// ºáÏòµ÷½Ú
-			if (posX < visibleSize.width / 2){
+            // æ¨ªå‘è°ƒèŠ‚
+            if (posX < visibleSize.width / 2){
 				auto moveBy = MoveBy::create(1.8f, Point(30.0f, 0));
 				mosquito->runAction(moveBy);
 			}
@@ -431,7 +446,7 @@ void FirstScene::mosquitoFunctionInUpdate(){
 			}
 		}
 		if (_frog->getBoundingBox().intersectsRect(mosquito->getBoundingBox()) && _isCollideValid){
-			if (_frog->getName() != "¼ÓËÙ×´Ì¬"){
+			if (_frog->getName() != "åŠ é€ŸçŠ¶æ€"){
 				auto scaleTo = ScaleTo::create(1.0f, _frog->getScale() + 0.1f);
 				_frog->runAction(scaleTo);
 				mosquito->setVisible(false);
@@ -462,17 +477,17 @@ void FirstScene::mosquitoFunctionInUpdate(){
 						this->removeChildByName("pauseMenu");
 						auto visibleSize = Director::getInstance()->getVisibleSize();
 						TTFConfig config("fonts/yuehei.otf", 48);
-						// Ìí¼ÓÖØĞÂ¿ªÊ¼°´Å¥
+						//æ·»åŠ é‡æ–°å¼€å§‹æŒ‰é’®
 						auto restartItem = MenuItemImage::create("btn_restart02.png", "btn_restart02.png", CC_CALLBACK_1(FirstScene::restart, this));
 						restartItem->setPosition(visibleSize.width / 2, visibleSize.height / 2.3);
-						// Ìí¼Ó·µ»ØÖ÷²Ëµ¥°´Å¥
-						auto backItem = MenuItemImage::create("btn_back02.png", "btn_back02.png", CC_CALLBACK_1(FirstScene::backGameScene, this));
+						//æ·»åŠ è¿”å›ä¸»èœå•æŒ‰é’®
+                        auto backItem = MenuItemImage::create("btn_back02.png", "btn_back02.png", CC_CALLBACK_1(FirstScene::backGameScene, this));
 						backItem->setPosition(visibleSize / 2);
 
 						auto menu = Menu::create(restartItem, backItem, NULL);
 						menu->setPosition(Vec2::ZERO);
 						this->addChild(menu, 200);
-						// ·ÖÊı
+						// åˆ†æ•°
 						auto labelScore = Label::createWithTTF(config, "  0  ");
 						labelScore->setPosition(Point(visibleSize.width / 2, visibleSize.height / 1.8));
 						labelScore->setColor(Color3B::YELLOW);
@@ -485,10 +500,10 @@ void FirstScene::mosquitoFunctionInUpdate(){
 					});
 					auto sequecne = Sequence::create(scaleTo, spawn, callfunc, NULL);
 					_frog->runAction(sequecne);
-				} // ËÙ¶ÈµÍÓÚ80µÄÊ±ºòÓÎÏ·½áÊø
+				} // é€Ÿåº¦ä½äº80çš„æ—¶å€™æ¸¸æˆç»“æŸ
 			}
 		}
-		else{ // ¼ÓËÙÊ±ÎÃ×Ó±»×²ºó
+		else{ // åŠ é€Ÿæ—¶èšŠå­è¢«æ’å
 			mosquito->setVisible(false);
 		}
 	}
@@ -497,7 +512,7 @@ void FirstScene::mosquitoFunctionInUpdate(){
 void FirstScene::bgMove(float uptime, int upY, float downtime, int downY){
 	auto up = MoveBy::create(uptime, Point(0, upY));
 	auto down = EaseSineOut::create(MoveBy::create(downtime, Point(0, downY)));
-	auto callfunc = CallFunc::create([=](){ this->bgMove(1.0f, 20, 1.0f, -150); }); // Ö±½ÓÓÃÊµ²Î³õÊ¼»¯
+	auto callfunc = CallFunc::create([=](){ this->bgMove(1.0f, 20, 1.0f, -150); }); // ç›´æ¥ç”¨å®å‚åˆå§‹åŒ–
 	auto sequence = Sequence::create(down, up, callfunc, NULL);
 	_bg1->runAction(sequence);
 
@@ -542,7 +557,7 @@ void FirstScene::begin(Ref *sender){
 	for (auto mosquito:_mosquitoes)
 		mosquito->run();
 	this->scheduleUpdate();
-	this->setAccelerometerEnabled(true);//¿ªÆôÓ²¼şÉè±¸ 
+	this->setAccelerometerEnabled(true);//å¼€å¯ç¡¬ä»¶è®¾å¤‡ 
 	this->removeChildByName("beginMenu");
 }
 

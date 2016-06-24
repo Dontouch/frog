@@ -21,13 +21,13 @@ private:
 	Sprite* _pool;
 	int _status; // 
 	Size _visibleSize;
-	int _cnt; // ½«Òª±»²ÈÌ¤µÄºÉÒ¶µÄ±ê¼Ç
-	float _velocityX; // xÖáËÙ¶È
-	float _velocityY; // yÖáËÙ¶È
+	int _cnt; //å°†è¦è¢«è¸©è¸çš„è·å¶çš„æ ‡è®°
+	float _velocityX; // xé€Ÿåº¦
+	float _velocityY; // yé€Ÿåº¦
 	LabelTTF* _label;
-	float _score; // µÃ·Ö
-	float _curfrogScale;// ¼ÆËãµÃ·ÖËùÓÃ
-	int _pattern; // Ä£Ê½
+	float _score; // å¾—åˆ†
+	float _curfrogScale;// è®¡ç®—å¾—åˆ†
+	int _pattern; //æ¨¡å¼
 	void start(Ref *sender);
 	void pause(Ref *sender);
 	void begin(Ref *sender);

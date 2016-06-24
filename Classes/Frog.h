@@ -2,6 +2,7 @@
 #define _FROG_H_
 
 #include "Entity.h"
+
 class Frog:public Entity{
 public:
 	CREATE_FUNC(Frog);

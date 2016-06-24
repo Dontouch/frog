@@ -10,8 +10,11 @@ Scene* EndlessSelect::createScene(){
 	return scene;
 }
 
+
 bool EndlessSelect::init(){
+    
 	auto visibleSize = Director::getInstance()->getVisibleSize();
+    
 	auto storyItem = MenuItemImage::create("mushroom.png", "mushroom.png", this, menu_selector(EndlessSelect::first));
 	auto storyMenu = CCMenu::createWithItem(storyItem);
 	storyMenu->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 200);
@@ -22,6 +25,7 @@ bool EndlessSelect::init(){
 	endlessMenu->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 200);
 	this->addChild(endlessMenu);
 	return true;
+    
 }
 void EndlessSelect::first(Ref *sender){
 	Director::getInstance()->replaceScene(FirstScene::createScene(2));

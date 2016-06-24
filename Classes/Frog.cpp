@@ -32,6 +32,7 @@ void Frog::jump2(float scale_time, float scale_times){
 void Frog::run(){
 	SpriteFrameCache* spriteFrameCache = SpriteFrameCache::getInstance();
 	Vector<SpriteFrame*> frogFrameVec;
+    //这里就是跑动画帧
 	SpriteFrame* spriteFrame;
 	for (int i = 2; i >=1; i--){
 		spriteFrame = spriteFrameCache->getSpriteFrameByName(StringUtils::format("frog%d.png", i));

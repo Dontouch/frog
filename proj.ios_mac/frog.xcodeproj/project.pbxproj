@@ -199,7 +199,7 @@
 		0FEAD8981D1CE20800B2DA11 /* Mosquito.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mosquito.h; sourceTree = "<group>"; };
 		0FEAD8991D1CE20800B2DA11 /* Mushroom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mushroom.cpp; sourceTree = "<group>"; };
 		0FEAD89A1D1CE20800B2DA11 /* Mushroom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mushroom.h; sourceTree = "<group>"; };
-		0FEAD89B1D1CE20800B2DA11 /* SecondScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SecondScene.cpp; sourceTree = "<group>"; };
+		0FEAD89B1D1CE20800B2DA11 /* SecondScene.cpp */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = sourcecode.cpp.cpp; path = SecondScene.cpp; sourceTree = "<group>"; };
 		0FEAD89C1D1CE20800B2DA11 /* SecondScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondScene.h; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };

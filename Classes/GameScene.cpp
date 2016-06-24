@@ -1,6 +1,8 @@
 #include "GameScene.h"
 #include "EndlessSelect.h"
 #include "FirstScene.h"
+
+
 Scene* GameScene::createScene(){
 	auto scene = Scene::create();
 	auto layer = GameScene::create();
@@ -9,14 +11,17 @@ Scene* GameScene::createScene(){
 }
 
 bool GameScene::init(){
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	// ´´½¨±³¾°
+	
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+	//åˆ›å»ºèƒŒæ™¯
 	auto bg = Sprite::create("levelSelect.png");
 	bg->setPosition(visibleSize / 2);
 	this->addChild(bg);
-	// Ìí¼ÓÑ¡Ôñ¹Ø¿¨°´Å¥
+	
+    // æ·»åŠ é€‰æ‹©èœå•æ çš„é€‰æ‹©
 	auto storyItem = MenuItemImage::create("storyPattern.png", "storyPattern.png", this, menu_selector(GameScene::story));
-	auto storyMenu = CCMenu::createWithItem(storyItem);
+	
+    auto storyMenu = CCMenu::createWithItem(storyItem);
 	storyMenu->setPosition(visibleSize.width/2,visibleSize.height/2 - 200);
 	this->addChild(storyMenu);
 
@@ -28,9 +33,9 @@ bool GameScene::init(){
 }
 
 void GameScene::story(Ref *sender){
-	Director::getInstance()->replaceScene(TransitionFade::create(2.0,FirstScene::createScene(1))); // ËæºóÔÚfirstSceneÖĞ×ªµ½ secondScene
+	Director::getInstance()->replaceScene(TransitionFade::create(2.0,FirstScene::createScene(1))); // éšååœ¨firstSceneä¸­è½¬åˆ° secondScene
 }
 
 void GameScene::endless(Ref *sender){
-	Director::getInstance()->replaceScene(EndlessSelect::createScene());  // ÎŞ¾¡Ä£Ê½ Ñ¡ÔñÌø¾®¹Ø¿¨»òÕßÌøºÉÒ¶¹Ø¿¨
+	Director::getInstance()->replaceScene(EndlessSelect::createScene());  //æ— å°½æ¨¡å¼
 }
